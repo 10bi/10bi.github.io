@@ -3,138 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>10BI - Next-Gen Development</title>
+    <title>10BI - Next Generation Development</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <span class="logo-text">&lt;10BI/&gt;</span>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#home" class="nav-link active">HOME</a></li>
-                <li><a href="#features" class="nav-link">FEATURES</a></li>
-                <li><a href="#tech" class="nav-link">TECH</a></li>
-                <li><a href="#docs" class="nav-link">DOCS</a></li>
-                <li><a href="#about" class="nav-link">ABOUT</a></li>
-            </ul>
-            <button class="access-btn">ACCESS TERMINAL</button>
-        </div>
-    </nav>
-
     <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <div class="version-badge">v2.0.1</div>
-            <div class="system-badge">SYSTEM ONLINE</div>
-            
-            <h1 class="hero-title">
-                BUILD<br>
-                <span class="gradient-text">THE FUTURE</span><br>
-                WITH CODE
-            </h1>
-            
-            <p class="hero-description">
-                A next-gen development environment<br>
-                for creators, thinkers, and innovators.<br>
-                Craft. Deploy. Dominate.
-            </p>
-            
-            <div class="hero-buttons">
-                <button class="btn btn-primary">LAUNCH IDE</button>
-                <button class="btn btn-secondary">VIEW DOCS</button>
-            </div>
-
-            <div class="trusted-by">
-                <p>TRUSTED BY DEVELOPERS AT</p>
-                <div class="company-logos">
-                    <div class="logo-item">GH</div>
-                    <div class="logo-item">VS</div>
-                    <div class="logo-item">CF</div>
-                    <div class="logo-item">HD</div>
-                    <div class="logo-item">AR</div>
+    <section class="hero">
+        <canvas id="canvas-hero"></canvas>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="logo-animated">
+                    <span class="logo-letter">1</span>
+                    <span class="logo-letter">0</span>
+                    <span class="logo-letter">B</span>
+                    <span class="logo-letter">I</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="word">The</span>
+                    <span class="word">Future</span>
+                    <span class="word">of</span>
+                    <span class="word">Code</span>
+                </h1>
+                <p class="hero-subtitle">Next-generation development platform for visionary builders</p>
+                <button class="cta-button">Explore Now</button>
+                <div class="scroll-indicator">
+                    <div class="scroll-dot"></div>
+                    <div class="scroll-dot"></div>
+                    <div class="scroll-dot"></div>
                 </div>
             </div>
-        </div>
-
-        <div class="hero-visual">
-            <div class="code-cube">
-                <div class="cube-face cube-front">
-                    <div class="binary-code">0101<br>1010</div>
-                </div>
-                <div class="cube-face cube-right"></div>
-                <div class="cube-face cube-top"></div>
-            </div>
-
-            <div class="floating-card card-1">
-                <div class="card-header">Deploy Status</div>
-                <div class="card-success">SUCCESS ✓</div>
-                <div class="card-progress">100%</div>
-            </div>
-
-            <div class="floating-card card-2">
-                <div class="card-header">System Activity</div>
-                <div class="chart">
-                    <div class="chart-bar" style="height: 40%;"></div>
-                    <div class="chart-bar" style="height: 60%;"></div>
-                    <div class="chart-bar" style="height: 50%;"></div>
-                    <div class="chart-bar" style="height: 70%;"></div>
-                </div>
-            </div>
-
-            <div class="floating-card card-3">
-                <div class="card-header">Live Terminal</div>
-                <div class="terminal-text">
-                    > initializing system<br>
-                    > loading modules...<br>
-                    > connecting to server...<br>
-                    > system online.
+            <div class="hero-visual">
+                <div class="hologram">
+                    <div class="hex hex-1"></div>
+                    <div class="hex hex-2"></div>
+                    <div class="hex hex-3"></div>
+                    <div class="hex hex-4"></div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="features">
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <span>&lt;/&gt;</span>
+    <section class="features-section">
+        <div class="section-container">
+            <h2 class="section-title">Capabilities</h2>
+            <div class="features-grid">
+                <div class="feature-item" data-index="0">
+                    <div class="feature-number">01</div>
+                    <h3>Intelligence</h3>
+                    <p>AI-powered development that learns your patterns and optimizes automatically</p>
+                    <div class="feature-visual"></div>
                 </div>
-                <h3>Smart Code</h3>
-                <p>AI-powered suggestions that understand you.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <span>⚡</span>
+                <div class="feature-item" data-index="1">
+                    <div class="feature-number">02</div>
+                    <h3>Performance</h3>
+                    <p>Lightning-fast execution with quantum-optimized algorithms</p>
+                    <div class="feature-visual"></div>
                 </div>
-                <h3>Blazing Fast</h3>
-                <p>Optimized performance for peak productivity.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <span>🔒</span>
+                <div class="feature-item" data-index="2">
+                    <div class="feature-number">03</div>
+                    <h3>Security</h3>
+                    <p>Military-grade encryption and zero-trust architecture</p>
+                    <div class="feature-visual"></div>
                 </div>
-                <h3>Secure by Design</h3>
-                <p>Enterprise-grade security for your peace of mind.</p>
-            </div>
-
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <span>📦</span>
+                <div class="feature-item" data-index="3">
+                    <div class="feature-number">04</div>
+                    <h3>Scalability</h3>
+                    <p>Infinite scaling across global infrastructure</p>
+                    <div class="feature-visual"></div>
                 </div>
-                <h3>Extensible</h3>
-                <p>Built to scale with plugins and custom integrations.</p>
             </div>
         </div>
     </section>
 
-    <!-- Particles Background -->
-    <div class="particles"></div>
+    <!-- Technology Stack Section -->
+    <section class="tech-section">
+        <div class="section-container">
+            <h2 class="section-title">Technology Stack</h2>
+            <div class="tech-grid">
+                <div class="tech-card" data-tech="Quantum">
+                    <div class="tech-icon">⚛️</div>
+                    <h3>Quantum Computing</h3>
+                    <p>Next-gen processing power</p>
+                </div>
+                <div class="tech-card" data-tech="AI">
+                    <div class="tech-icon">🤖</div>
+                    <h3>Advanced AI</h3>
+                    <p>Machine learning integration</p>
+                </div>
+                <div class="tech-card" data-tech="Blockchain">
+                    <div class="tech-icon">⛓️</div>
+                    <h3>Blockchain</h3>
+                    <p>Decentralized architecture</p>
+                </div>
+                <div class="tech-card" data-tech="Cloud">
+                    <div class="tech-icon">☁️</div>
+                    <h3>Cloud Native</h3>
+                    <p>Distributed systems</p>
+                </div>
+                <div class="tech-card" data-tech="Edge">
+                    <div class="tech-icon">🌐</div>
+                    <h3>Edge Computing</h3>
+                    <p>Ultra-low latency</p>
+                </div>
+                <div class="tech-card" data-tech="IoT">
+                    <div class="tech-icon">📡</div>
+                    <h3>IoT Integration</h3>
+                    <p>Smart device connectivity</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="section-container">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" data-target="10000">0</div>
+                    <div class="stat-label">+Deployments</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" data-target="99">0</div>
+                    <div class="stat-label">% Uptime</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" data-target="5">0</div>
+                    <div class="stat-label">ms Response</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" data-target="150">0</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pipeline Section -->
+    <section class="pipeline-section">
+        <div class="section-container">
+            <h2 class="section-title">Development Pipeline</h2>
+            <div class="pipeline">
+                <div class="pipeline-stage" data-stage="0">
+                    <div class="stage-dot"></div>
+                    <div class="stage-content">
+                        <h4>Design</h4>
+                        <p>Vision to prototype in hours</p>
+                    </div>
+                </div>
+                <div class="pipeline-connector"></div>
+                <div class="pipeline-stage" data-stage="1">
+                    <div class="stage-dot"></div>
+                    <div class="stage-content">
+                        <h4>Build</h4>
+                        <p>Production-ready code instantly</p>
+                    </div>
+                </div>
+                <div class="pipeline-connector"></div>
+                <div class="pipeline-stage" data-stage="2">
+                    <div class="stage-dot"></div>
+                    <div class="stage-content">
+                        <h4>Deploy</h4>
+                        <p>Global distribution in seconds</p>
+                    </div>
+                </div>
+                <div class="pipeline-connector"></div>
+                <div class="pipeline-stage" data-stage="3">
+                    <div class="stage-dot"></div>
+                    <div class="stage-content">
+                        <h4>Monitor</h4>
+                        <p>Real-time insights and optimization</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="section-container">
+            <h2 class="cta-title">Ready to Transform?</h2>
+            <p class="cta-subtitle">Join thousands of developers building the future</p>
+            <button class="cta-button cta-button-large">Get Started</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2024 10BI - Next Generation Development Platform</p>
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy</a>
+                <a href="#" class="footer-link">Terms</a>
+                <a href="#" class="footer-link">Contact</a>
+            </div>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>
