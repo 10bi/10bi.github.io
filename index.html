@@ -1,10 +1,407 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>10bi Website</title>
-</head>
-<body>
-    <h1>Hello, this site is live 🚀</h1>
-</body>
-</html>
+import React from 'react';
+import { 
+  Terminal, 
+  Code2, 
+  Zap, 
+  Lock, 
+  Box, 
+  Github, 
+  Figma, 
+  Monitor, 
+  Database,
+  Activity,
+  CheckCircle2,
+  ChevronRight,
+  FileText
+} from 'lucide-react';
+
+export default function App() {
+  return (
+    <div className="min-h-screen bg-[#05050A] text-white font-sans overflow-x-hidden relative selection:bg-purple-500/30">
+      
+      {/* Background Grid & Glows */}
+      <div className="absolute inset-0 z-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/20 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-600/20 rounded-full blur-[120px]"></div>
+      </div>
+
+      {/* Custom Styles for Animations */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-15px); }
+        }
+        @keyframes float-slow {
+          0%, 100% { transform: translateY(0px) translateX(0px); }
+          50% { transform: translateY(-10px) translateX(5px); }
+        }
+        @keyframes pulse-glow {
+          0%, 100% { opacity: 1; text-shadow: 0 0 20px rgba(139, 92, 246, 0.8); }
+          50% { opacity: 0.7; text-shadow: 0 0 10px rgba(139, 92, 246, 0.3); }
+        }
+        .animate-float { animation: float 5s ease-in-out infinite; }
+        .animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
+        .animate-float-delayed { animation: float 6s ease-in-out 2.5s infinite; }
+        .glow-text { animation: pulse-glow 3s ease-in-out infinite; }
+      `}} />
+
+      {/* Navbar */}
+      <nav className="relative z-10 flex items-center justify-between px-6 py-5 md:px-16 border-b border-white/5 bg-[#05050A]/80 backdrop-blur-md">
+        <div className="flex items-center gap-2">
+          <span className="text-2xl font-black tracking-tighter text-white">
+            &lt;10bi<span className="text-purple-500">/</span>&gt;
+          </span>
+        </div>
+        
+        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
+          <a href="#" className="text-purple-400 relative">
+            HOME
+            <span className="absolute -bottom-2 left-1/2 w-1 h-1 bg-purple-400 rounded-full transform -translate-x-1/2"></span>
+          </a>
+          <a href="#" className="hover:text-white transition-colors">FEATURES</a>
+          <a href="#" className="hover:text-white transition-colors">TECH</a>
+          <a href="#" className="hover:text-white transition-colors">DOCS</a>
+          <a href="#" className="hover:text-white transition-colors">ABOUT</a>
+        </div>
+
+        <button className="flex items-center gap-3 px-4 py-2 text-xs font-mono border border-white/10 rounded-md hover:bg-white/5 hover:border-white/20 transition-all text-gray-300">
+          ACCESS TERMINAL
+          <span className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.8)] animate-pulse"></span>
+        </button>
+      </nav>
+
+      {/* Hero Section */}
+      <main className="relative z-10 max-w-7xl mx-auto px-6 md:px-16 pt-20 pb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+          
+          {/* Left Column - Content */}
+          <div className="order-2 lg:order-1">
+            <div className="flex items-center gap-4 mb-8 font-mono text-xs">
+              <span className="px-2 py-1 rounded border border-green-500/30 text-green-400 bg-green-500/10">
+                v2.0.1
+              </span>
+              <span className="flex items-center gap-2 text-green-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                SYSTEM ONLINE
+              </span>
+            </div>
+
+            <h1 className="text-5xl md:text-7xl font-extrabold leading-[1.1] mb-6 tracking-tight">
+              BUILD <br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-purple-500 to-blue-500">
+                THE FUTURE
+              </span> <br/>
+              WITH 10bi
+            </h1>
+
+            <p className="text-gray-400 text-lg md:text-xl max-w-md mb-10 leading-relaxed">
+              A next-gen development environment for creators, thinkers, and innovators. Craft. Deploy. Dominate.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-4 mb-16">
+              <button className="relative group px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg font-semibold text-white overflow-hidden shadow-[0_0_30px_rgba(139,92,246,0.3)] transition-all hover:shadow-[0_0_40px_rgba(139,92,246,0.5)] hover:scale-[1.02]">
+                <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out"></div>
+                <span className="relative flex items-center gap-2">
+                  LAUNCH IDE <ChevronRight className="w-4 h-4" />
+                </span>
+              </button>
+              
+              <button className="flex items-center gap-2 px-8 py-4 rounded-lg font-semibold text-gray-300 border border-white/10 hover:bg-white/5 transition-all">
+                VIEW DOCS <FileText className="w-4 h-4 text-green-400" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <p className="text-xs font-mono text-gray-500 tracking-wider">TRUSTED BY DEVELOPERS AT</p>
+              <div className="flex items-center gap-6 text-gray-600">
+                <Github className="w-6 h-6 hover:text-gray-300 transition-colors cursor-pointer" />
+                <Monitor className="w-6 h-6 hover:text-blue-400 transition-colors cursor-pointer" />
+                <Figma className="w-6 h-6 hover:text-pink-400 transition-colors cursor-pointer" />
+                <Database className="w-6 h-6 hover:text-blue-500 transition-colors cursor-pointer" />
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column - Visuals */}
+          <div className="order-1 lg:order-2 relative h-[400px] md:h-[500px] flex items-center justify-center">
+            
+            {/* The Central "Cube" Structure */}
+            <div className="relative z-10 w-64 h-64 border border-purple-500/30 rounded-xl bg-[#0a0a14]/80 backdrop-blur-xl shadow-[0_0_80px_rgba(139,92,246,0.15)] flex flex-col items-center justify-center border-b-4 border-b-purple-600/50 animate-float">
+              <div className="absolute -top-12 text-6xl text-purple-400 font-mono opacity-80 glow-text drop-shadow-[0_0_15px_rgba(139,92,246,0.8)]">
+                &lt;/&gt;
+              </div>
+              <div className="grid grid-cols-2 gap-4 text-center">
+                <div className="text-4xl text-purple-400 glow-text">&lt;/&gt;</div>
+                <div className="text-2xl font-mono text-blue-400 opacity-80 flex flex-col justify-center">
+                  <span>0101</span>
+                  <span>1010</span>
+                </div>
+              </div>
+              
+              {/* Base Platform */}
+              <div className="absolute -bottom-20 w-[150%] h-20 border-t border-purple-500/30 rounded-[100%] bg-gradient-to-t from-purple-900/10 to-transparent blur-[2px]"></div>
+              <div className="absolute -bottom-24 w-[180%] h-20 border-t border-blue-500/20 rounded-[100%] bg-gradient-to-t from-blue-900/10 to-transparent blur-[4px]"></div>
+            </div>
+
+            {/* Floating Card 1: Deploy Status */}
+            <div className="absolute top-10 md:top-0 left-0 md:-left-10 bg-[#12121a] border border-white/10 rounded-lg p-4 shadow-2xl animate-float-slow z-20 w-48">
+              <p className="text-xs text-gray-400 mb-1">Deploy Status</p>
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-green-400 font-mono text-sm flex items-center gap-1">
+                  SUCCESS <CheckCircle2 className="w-3 h-3" />
+                </span>
+                <span className="text-xs text-gray-500">100%</span>
+              </div>
+              <div className="w-full h-1 bg-gray-800 rounded-full overflow-hidden">
+                <div className="w-full h-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]"></div>
+              </div>
+            </div>
+
+            {/* Floating Card 2: System Activity */}
+            <div className="absolute top-20 right-0 md:-right-12 bg-[#12121a] border border-white/10 rounded-lg p-4 shadow-2xl animate-float-delayed z-20 w-52">
+              <div className="flex items-center justify-between mb-4">
+                <p className="text-xs text-gray-400">System Activity</p>
+                <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+              </div>
+              <div className="h-12 w-full flex items-end gap-1">
+                {[40, 60, 30, 80, 50, 90, 40, 70, 50, 100].map((h, i) => (
+                  <div key={i} className="flex-1 bg-blue-500/20 rounded-t-sm" style={{ height: `${h}%` }}>
+                    <div className="w-full bg-blue-400 rounded-t-sm shadow-[0_0_5px_rgba(96,165,250,0.5)]" style={{ height: '2px' }}></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Floating Card 3: Live Terminal */}
+            <div className="absolute bottom-10 right-10 md:-right-4 bg-[#0d0d14] border border-white/10 rounded-lg p-4 shadow-2xl animate-float z-20 w-64 border-t-2 border-t-purple-500/50">
+              <p className="text-xs text-gray-400 mb-3 flex items-center gap-2">
+                <Terminal className="w-3 h-3" /> Live Terminal
+              </p>
+              <div className="font-mono text-[10px] space-y-1">
+                <p className="text-gray-500"><span className="text-green-500">&gt;</span> initializing 10bi system...</p>
+                <p className="text-gray-500"><span className="text-green-500">&gt;</span> loading binary modules...</p>
+                <p className="text-gray-500"><span className="text-green-500">&gt;</span> connecting to server...</p>
+                <p className="text-green-400"><span className="text-green-500">&gt;</span> system online.</p>
+                <p className="text-purple-400 mt-2 flex items-center gap-1">
+                  <span className="text-green-500">&gt;</span> _ <span className="w-1.5 h-3 bg-purple-400 animate-pulse inline-block"></span>
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        {/* Features Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mt-32 pt-16 border-t border-white/5">
+          
+          <div className="p-6 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors group">
+            <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <Code2 className="w-5 h-5 text-purple-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">Smart Code</h3>
+            <p className="text-sm text-gray-500 leading-relaxed">
+              AI-powered suggestions that understand your logic.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors group">
+            <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <Zap className="w-5 h-5 text-blue-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">Blazing Fast</h3>
+            <p className="text-sm text-gray-500 leading-relaxed">
+              Optimized performance for peak productivity and speed.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors group">
+            <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <Lock className="w-5 h-5 text-green-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">Secure by Design</h3>
+            <p className="text-sm text-gray-500 leading-relaxed">
+              Enterprise-grade security for your peace of mind.
+            </p>
+          </div>
+
+          <div className="p-6 rounded-xl bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors group">
+            <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+              <Box className="w-5 h-5 text-purple-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-2">Extensible</h3>
+            <p className="text-sm text-gray-500 leading-relaxed">
+              Built to scale with modern plugins and custom integrations.
+            </p>
+          </div>
+
+        </div>
+      </main>
+
+      {}
+      <section className="relative z-10 w-full bg-[#030305] border-t border-white/5 py-32">
+        <div className="max-w-7xl mx-auto px-6 md:px-16">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight mb-4">
+              Write Once. <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Run Anywhere.</span>
+            </h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              Experience the power of the 10bi engine right from your browser. Seamlessly compile binary code with quantum-level efficiency.
+            </p>
+          </div>
+
+          {/* Code Editor UI */}
+          <div className="rounded-xl border border-white/10 bg-[#0a0a0f] shadow-[0_0_50px_rgba(0,0,0,0.5)] overflow-hidden flex flex-col hover:border-purple-500/30 transition-colors duration-500">
+            {/* Editor Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-white/5 bg-[#101018]">
+              <div className="flex gap-2">
+                <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+                <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+              </div>
+              <div className="font-mono text-xs text-gray-400 flex gap-4">
+                <span className="text-purple-400 border-b border-purple-400 pb-1">10bi.config.js</span>
+                <span className="hover:text-white cursor-pointer transition-colors">server.js</span>
+                <span className="hover:text-white cursor-pointer transition-colors">database.yml</span>
+              </div>
+              <div className="w-10"></div> {/* Spacer for symmetry */}
+            </div>
+            
+            {/* Editor Body */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 min-h-[300px]">
+              {/* Code Area */}
+              <div className="col-span-2 p-6 font-mono text-sm overflow-x-auto bg-[#0d0d12]">
+                <div className="flex gap-4">
+                  <div className="flex flex-col text-gray-600 select-none text-right">
+                    <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                  </div>
+                  <div className="text-gray-300">
+                    <p><span className="text-pink-500">import</span> {'{'} <span className="text-blue-400">Core</span> {'}'} <span className="text-pink-500">from</span> <span className="text-green-400">'@10bi/engine'</span>;</p>
+                    <br/>
+                    <p><span className="text-pink-500">const</span> <span className="text-blue-400">system</span> = <span className="text-pink-500">new</span> <span className="text-blue-200">Core</span>({'{'}</p>
+                    <p className="pl-4">mode: <span className="text-green-400">'quantum-compile'</span>,</p>
+                    <p className="pl-4">threads: <span className="text-purple-400">1024</span>,</p>
+                    <p className="pl-4">security: <span className="text-green-400">'enterprise-grade'</span>,</p>
+                    <p className="pl-4">matrix_enabled: <span className="text-orange-400">true</span></p>
+                    <p>{'}'});</p>
+                    <br/>
+                    <p><span className="text-blue-400">system</span>.<span className="text-blue-200">initialize</span>().<span className="text-blue-200">then</span>(() <span className="text-pink-500">=&gt;</span> {'{'}</p>
+                    <p className="pl-4"><span className="text-blue-400">console</span>.<span className="text-blue-200">log</span>(<span className="text-green-400">"10bi matrix online. Ready to deploy."</span>);</p>
+                    <p>{'}'});</p>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Terminal Area */}
+              <div className="col-span-1 border-t lg:border-t-0 lg:border-l border-white/5 bg-[#050508] p-4 font-mono text-xs flex flex-col justify-end">
+                <div className="space-y-2 mb-4">
+                  <p className="text-gray-500">~ 10bi system v2.0.1 (x64-unix)</p>
+                  <p className="text-gray-400"><span className="text-blue-500">➜</span>  <span className="text-cyan-400">~</span> node 10bi.config.js</p>
+                  <p className="text-gray-400">[info] Booting quantum core...</p>
+                  <p className="text-gray-400">[info] Allocating 1024 threads...</p>
+                  <p className="text-yellow-400">[warn] Matrix protocol initiated.</p>
+                  <p className="text-green-400">✔ 10bi matrix online. Ready to deploy.</p>
+                  <p className="text-gray-400 flex items-center gap-2">
+                    <span className="text-blue-500">➜</span>  <span className="text-cyan-400">~</span>
+                    <span className="w-2 h-4 bg-gray-400 animate-pulse"></span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {}
+      <section className="relative z-10 w-full bg-[#05050A] border-t border-white/5 py-24">
+        <div className="max-w-7xl mx-auto px-6 md:px-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/5">
+            <div className="text-center px-4">
+              <div className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tighter">
+                10<span className="text-purple-500">M+</span>
+              </div>
+              <div className="text-sm text-gray-500 font-mono">Lines Compiled</div>
+            </div>
+            <div className="text-center px-4">
+              <div className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tighter">
+                0<span className="text-blue-500">ms</span>
+              </div>
+              <div className="text-sm text-gray-500 font-mono">Added Latency</div>
+            </div>
+            <div className="text-center px-4">
+              <div className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tighter">
+                99<span className="text-green-500">.9%</span>
+              </div>
+              <div className="text-sm text-gray-500 font-mono">System Uptime</div>
+            </div>
+            <div className="text-center px-4">
+              <div className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tighter">
+                50<span className="text-pink-500">k</span>
+              </div>
+              <div className="text-sm text-gray-500 font-mono">Active Devs</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {}
+      <footer className="relative z-10 bg-[#020205] border-t border-white/5 pt-20 pb-10">
+        <div className="max-w-7xl mx-auto px-6 md:px-16">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div className="col-span-1 md:col-span-2">
+              <div className="flex items-center gap-2 mb-6">
+                <span className="text-2xl font-black tracking-tighter text-white">
+                  &lt;10bi<span className="text-purple-500">/</span>&gt;
+                </span>
+              </div>
+              <p className="text-gray-500 max-w-sm text-sm leading-relaxed mb-6">
+                Redefining the development experience with blazing fast binary compilation and AI-powered logic. Welcome to the future of coding.
+              </p>
+              <div className="flex gap-4">
+                <a href="#" className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                  <Github className="w-5 h-5" />
+                </a>
+                <a href="#" className="w-10 h-10 rounded-lg border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/5 transition-all">
+                  <Monitor className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="text-white font-semibold mb-6">Resources</h4>
+              <ul className="space-y-3 text-sm text-gray-500">
+                <li><a href="#" className="hover:text-purple-400 transition-colors">Documentation</a></li>
+                <li><a href="#" className="hover:text-purple-400 transition-colors">API Reference</a></li>
+                <li><a href="#" className="hover:text-purple-400 transition-colors">Community Forum</a></li>
+                <li><a href="#" className="hover:text-purple-400 transition-colors">GitHub Repository</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-semibold mb-6">Company</h4>
+              <ul className="space-y-3 text-sm text-gray-500">
+                <li><a href="#" className="hover:text-blue-400 transition-colors">About 10bi</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Careers</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-blue-400 transition-colors">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-mono text-gray-600">
+            <p>© {new Date().getFullYear()} 10bi System. All rights reserved.</p>
+            <div className="flex gap-6">
+              <a href="#" className="hover:text-gray-400">Privacy Policy</a>
+              <a href="#" className="hover:text-gray-400">Terms of Service</a>
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                System Status: ALL GREEN
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  );
+}
