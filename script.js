@@ -1,305 +1,58 @@
 // ============================================================================
-// HERO CANVAS ANIMATION
+// ADVANCED PARTICLE SYSTEM WITH PHYSICS ENGINE
 // ============================================================================
 
-class CanvasAnimation {
-    constructor(canvasId) {
-        this.canvas = document.getElementById(canvasId);
-        this.ctx = this.canvas.getContext('2d');
+class AdvancedParticleSystem {
+    constructor() {
         this.particles = [];
-        this.resize();
-        window.addEventListener('resize', () => this.resize());
-        this.animate();
+        this.container = document.body;
+        this.maxParticles = this.getOptimalParticleCount();
+        this.generateInitialParticles();
     }
 
-    resize() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+    getOptimalParticleCount() {
+        if (navigator.deviceMemory && navigator.deviceMemory < 4) return 60;
+        if (window.innerWidth < 768) return 80;
+        return 150;
     }
 
-    createParticles() {
-        this.particles = [];
-        const count = Math.min(100, Math.floor(window.innerWidth / 10));
-        for (let i = 0; i < count; i++) {
-            this.particles.push({
-                x: Math.random() * this.canvas.width,
-                y: Math.random() * this.canvas.height,
-                vx: (Math.random() - 0.5) * 2,
-                vy: (Math.random() - 0.5) * 2,
-                radius: Math.random() * 2 + 1,
-                opacity: Math.random() * 0.5 + 0.2,
-                color: Math.random() > 0.5 ? '#8B5CF6' : '#06B6D4'
-            });
+    generateInitialParticles() {
+        for (let i = 0; i < this.maxParticles; i++) {
+            this.addParticle(
+                Math.random() * window.innerWidth,
+                Math.random() * window.innerHeight
+            );
         }
     }
 
-    update() {
-        this.particles.forEach(p => {
-            p.x += p.vx;
-            p.y += p.vy;
+    addParticle(x, y, vx = 0, vy = 0) {
+        if (this.particles.length >= this.maxParticles) return;
 
-            // Bounce off edges
-            if (p.x < 0 || p.x > this.canvas.width) p.vx *= -1;
-            if (p.y < 0 || p.y > this.canvas.height) p.vy *= -1;
-        });
-    }
-
-    draw() {
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        this.particles.forEach((p, i) => {
-            // Draw particle
-            this.ctx.fillStyle = p.color;
-            this.ctx.globalAlpha = p.opacity;
-            this.ctx.beginPath();
-            this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            this.ctx.fill();
-
-            // Draw connections
-            for (let j = i + 1; j < this.particles.length; j++) {
-                const p2 = this.particles[j];
-                const dx = p.x - p2.x;
-                const dy = p.y - p2.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < 150) {
-                    this.ctx.strokeStyle = p.color;
-                    this.ctx.globalAlpha = (1 - distance / 150) * 0.3;
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(p.x, p.y);
-                    this.ctx.lineTo(p2.x, p2.y);
-                    this.ctx.stroke();
-                }
-            }
-        });
-
-        this.ctx.globalAlpha = 1;
-    }
-
-    animate() {
-        this.update();
-        this.draw();
-        requestAnimationFrame(() => this.animate());
-    }
-}
-
-const canvasAnim = new CanvasAnimation('canvas-hero');
-canvasAnim.createParticles();
-
-// ============================================================================
-// SCROLL ANIMATIONS
-// ============================================================================
-
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.animation = 'none';
-            setTimeout(() => {
-                entry.target.style.animation = '';
-            }, 10);
-        }
-    });
-}, observerOptions);
-
-document.querySelectorAll('.feature-item, .tech-card, .stat-card, .pipeline-stage').forEach(el => {
-    observer.observe(el);
-});
-
-// ============================================================================
-// COUNTER ANIMATION FOR STATS
-// ============================================================================
-
-function animateCounters() {
-    const statValues = document.querySelectorAll('.stat-value[data-target]');
-    const observerCount = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const target = parseInt(entry.target.dataset.target);
-                let current = 0;
-                const increment = target / 50;
-                const interval = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        entry.target.textContent = target;
-                        clearInterval(interval);
-                    } else {
-                        entry.target.textContent = Math.floor(current);
-                    }
-                }, 30);
-                observerCount.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
-
-    statValues.forEach(el => observerCount.observe(el));
-}
-
-animateCounters();
-
-// ============================================================================
-// MOUSE MOVEMENT FOR HERO VISUAL
-// ============================================================================
-
-const heroVisual = document.querySelector('.hero-visual');
-if (heroVisual) {
-    document.addEventListener('mousemove', (e) => {
-        const x = (e.clientX / window.innerWidth - 0.5) * 20;
-        const y = (e.clientY / window.innerHeight - 0.5) * 20;
-        heroVisual.style.transform = `perspective(1000px) rotateY(${x}deg) rotateX(${-y}deg)`;
-    });
-
-    document.addEventListener('mouseleave', () => {
-        heroVisual.style.transform = 'perspective(1000px) rotateY(0) rotateX(0)';
-    });
-}
-
-// ============================================================================
-// BUTTON INTERACTIONS
-// ============================================================================
-
-const buttons = document.querySelectorAll('.cta-button');
-buttons.forEach(button => {
-    button.addEventListener('click', function(e) {
-        // Create ripple effect
-        const ripple = document.createElement('span');
-        const rect = this.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - size / 2;
-        const y = e.clientY - rect.top - size / 2;
-
-        ripple.style.cssText = `
-            position: absolute;
-            width: ${size}px;
-            height: ${size}px;
-            left: ${x}px;
-            top: ${y}px;
-            background: rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
+        const particle = document.createElement('div');
+        particle.className = 'particle';
+        particle.style.cssText = `
+            position: fixed;
             pointer-events: none;
-            animation: ripple 0.6s ease-out;
+            border-radius: 50%;
+            will-change: transform;
         `;
 
-        this.style.position = 'relative';
-        this.style.overflow = 'hidden';
-        this.appendChild(ripple);
-        setTimeout(() => ripple.remove(), 600);
-    });
-});
+        const size = Math.random() * 3 + 1;
+        const color = ['#8B5CF6', '#06B6D4', '#10B981'][Math.floor(Math.random() * 3)];
+        
+        this.container.appendChild(particle);
 
-// ============================================================================
-// SMOOTH SCROLL WITH EASING
-// ============================================================================
-
-function easeInOutQuad(t) {
-    return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
-}
-
-function smoothScroll(target, duration = 1000) {
-    const startY = window.scrollY;
-    const endY = target.offsetTop - 100;
-    const distance = endY - startY;
-    let startTime = null;
-
-    function scroll(currentTime) {
-        if (startTime === null) startTime = currentTime;
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        const ease = easeInOutQuad(progress);
-        window.scrollTo(0, startY + distance * ease);
-        if (progress < 1) requestAnimationFrame(scroll);
-    }
-
-    requestAnimationFrame(scroll);
-}
-
-// ============================================================================
-// SCROLL PARALLAX EFFECT
-// ============================================================================
-
-function handleParallax() {
-    const scrollY = window.scrollY;
-    const heroContent = document.querySelector('.hero-content');
-    if (heroContent) {
-        heroContent.style.transform = `translateY(${scrollY * 0.3}px)`;
-    }
-}
-
-window.addEventListener('scroll', handleParallax, { passive: true });
-
-// ============================================================================
-// PERFORMANCE OPTIMIZATION
-// ============================================================================
-
-let isSlowDevice = false;
-if (navigator.deviceMemory) {
-    isSlowDevice = navigator.deviceMemory < 4;
-}
-
-if (isSlowDevice) {
-    console.log('Performance mode: Low-end device detected');
-    canvasAnim.particles = canvasAnim.particles.slice(0, 30);
-}
-
-// ============================================================================
-// KEYBOARD SHORTCUTS
-// ============================================================================
-
-let easterEggSequence = '';
-const easterEgg = 'quantum';
-
-document.addEventListener('keydown', (e) => {
-    easterEggSequence += e.key.toLowerCase();
-    easterEggSequence = easterEggSequence.slice(-easterEgg.length);
-
-    if (easterEggSequence === easterEgg) {
-        triggerEasterEgg();
-    }
-});
-
-function triggerEasterEgg() {
-    console.log('%c🚀 QUANTUM MODE ACTIVATED!', 'font-size: 30px; color: #8B5CF6; font-weight: bold;');
-    document.body.style.animation = 'quantumFlash 0.5s ease-out';
-    
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes quantumFlash {
-            0% { filter: hue-rotate(0deg) brightness(1); }
-            50% { filter: hue-rotate(360deg) brightness(1.2); }
-            100% { filter: hue-rotate(0deg) brightness(1); }
-        }
-        @keyframes ripple {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(style);
-}
-
-// ============================================================================
-// CONSOLE WELCOME
-// ============================================================================
-
-console.clear();
-console.log(`
-%c╔════════════════════════════════════════╗
-║  🚀 WELCOME TO 10BI v2.0.1 🚀          ║
-║  Next Generation Development Platform  ║
-╚════════════════════════════════════════╝
-`, 'color: #8B5CF6; font-weight: bold; font-size: 14px;');
-
-console.log('%c✨ Premium Features:', 'color: #06B6D4; font-weight: bold;');
-console.log('%c• Physics-based Canvas Animations', 'color: #10B981;');
-console.log('%c• Smooth Scroll with Easing', 'color: #10B981;');
-console.log('%c• Parallax Scrolling', 'color: #10B981;');
-console.log('%c• Advanced Particle System', 'color: #10B981;');
-console.log('%c• Counter Animations', 'color: #10B981;');
-console.log('%c• Responsive Design', 'color: #10B981;');
-
-console.log('%c🔑 Easter Egg: Type "quantum" on your keyboard!', 'color: #EF4444; font-weight: bold;');
+        const p = {
+            element: particle,
+            x, y,
+            vx: vx || (Math.random() - 0.5) * 3,
+            vy: vy || (Math.random() - 0.5) * 3,
+            ax: 0,
+            ay: 0.05,
+            size,
+            color,
+            life: 1,
+            maxLife: Math.random() * 5 + 8,
+            mass: size * 0.2,
+            friction: 0.98,
+            updateElement: function() {\n                this.element.style.left = this.x + 'px';\n                this.element.style.top = this.y + 'px';\n                this.element.style.width = this.size + 'px';\n                this.element.style.height = this.size + 'px';\n                this.element.style.backgroundColor = this.color;\n                this.element.style.opacity = Math.max(0, this.life);\n                this.element.style.boxShadow = `0 0 ${this.size * 2}px ${this.color}`;\n            }\n        };\n\n        this.particles.push(p);\n    }\n\n    update() {\n        const gravity = 0.1;\n        const windForce = Math.sin(Date.now() / 2000) * 0.02;\n\n        this.particles = this.particles.filter(p => {\n            p.vx += p.ax + windForce;\n            p.vy += p.ay + gravity;\n            p.vx *= p.friction;\n            p.vy *= p.friction;\n\n            p.x += p.vx;\n            p.y += p.vy;\n            p.life -= 1 / (60 * p.maxLife);\n\n            if (p.x < 0 || p.x > window.innerWidth ||\n                p.y < 0 || p.y > window.innerHeight ||\n                p.life <= 0) {\n                p.element.remove();\n                return false;\n            }\n\n            p.updateElement();\n            return true;\n        });\n\n        while (this.particles.length < this.maxParticles * 0.7) {\n            this.addParticle(\n                Math.random() * window.innerWidth,\n                Math.random() * window.innerHeight\n            );\n        }\n    }\n\n    addBurst(x, y, count = 15) {\n        for (let i = 0; i < count; i++) {\n            const angle = (Math.PI * 2 * i) / count;\n            const speed = 4 + Math.random() * 2;\n            this.addParticle(\n                x, y,\n                Math.cos(angle) * speed,\n                Math.sin(angle) * speed\n            );\n        }\n    }\n}\n\nconst particleSystem = new AdvancedParticleSystem();\n\nlet lastFrameTime = 0;\nfunction animateParticles(currentTime) {\n    if (currentTime - lastFrameTime > 16) {\n        particleSystem.update();\n        lastFrameTime = currentTime;\n    }\n    requestAnimationFrame(animateParticles);\n}\nrequestAnimationFrame(animateParticles);\n\n// ============================================================================\n// HERO CANVAS WITH ADVANCED EFFECTS\n// ============================================================================\n\nclass EnhancedCanvasAnimation {\n    constructor(canvasId) {\n        this.canvas = document.getElementById(canvasId);\n        if (!this.canvas) return;\n        \n        this.ctx = this.canvas.getContext('2d');\n        this.particles = [];\n        this.time = 0;\n        this.resize();\n        window.addEventListener('resize', () => this.resize());\n        this.createParticles();\n        this.animate();\n    }\n\n    resize() {\n        this.canvas.width = window.innerWidth;\n        this.canvas.height = window.innerHeight;\n    }\n\n    createParticles() {\n        this.particles = [];\n        const count = Math.min(80, Math.floor(window.innerWidth / 15));\n        for (let i = 0; i < count; i++) {\n            this.particles.push({\n                x: Math.random() * this.canvas.width,\n                y: Math.random() * this.canvas.height,\n                vx: (Math.random() - 0.5) * 1.5,\n                vy: (Math.random() - 0.5) * 1.5,\n                radius: Math.random() * 1.5 + 0.5,\n                opacity: Math.random() * 0.4 + 0.1,\n                phase: Math.random() * Math.PI * 2,\n                frequency: Math.random() * 0.01 + 0.001,\n                color: Math.random() > 0.5 ? '#8B5CF6' : '#06B6D4'\n            });\n        }\n    }\n\n    update() {\n        this.time += 0.016;\n        \n        this.particles.forEach((p, i) => {\n            p.x += p.vx;\n            p.y += p.vy;\n            p.y += Math.sin(this.time * p.frequency + p.phase) * 0.5;\n\n            if (p.x < -50 || p.x > this.canvas.width + 50) p.vx *= -1;\n            if (p.y < -50 || p.y > this.canvas.height + 50) p.vy *= -1;\n\n            if (p.x < -50) p.x = this.canvas.width + 50;\n            if (p.x > this.canvas.width + 50) p.x = -50;\n            if (p.y < -50) p.y = this.canvas.height + 50;\n            if (p.y > this.canvas.height + 50) p.y = -50;\n        });\n    }\n\n    draw() {\n        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);\n        this.ctx.lineWidth = 0.5;\n\n        this.particles.forEach((p, i) => {\n            const gradient = this.ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 3);\n            gradient.addColorStop(0, p.color);\n            gradient.addColorStop(1, 'transparent');\n            \n            this.ctx.fillStyle = gradient;\n            this.ctx.globalAlpha = p.opacity * 0.3;\n            this.ctx.beginPath();\n            this.ctx.arc(p.x, p.y, p.radius * 3, 0, Math.PI * 2);\n            this.ctx.fill();\n\n            this.ctx.fillStyle = p.color;\n            this.ctx.globalAlpha = p.opacity;\n            this.ctx.beginPath();\n            this.ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);\n            this.ctx.fill();\n\n            for (let j = i + 1; j < Math.min(i + 5, this.particles.length); j++) {\n                const p2 = this.particles[j];\n                const dx = p.x - p2.x;\n                const dy = p.y - p2.y;\n                const distance = Math.sqrt(dx * dx + dy * dy);\n\n                if (distance < 120) {\n                    this.ctx.strokeStyle = p.color;\n                    this.ctx.globalAlpha = (1 - distance / 120) * 0.2;\n                    this.ctx.beginPath();\n                    this.ctx.moveTo(p.x, p.y);\n                    this.ctx.lineTo(p2.x, p2.y);\n                    this.ctx.stroke();\n                }\n            }\n        });\n\n        this.ctx.globalAlpha = 1;\n    }\n\n    animate() {\n        this.update();\n        this.draw();\n        requestAnimationFrame(() => this.animate());\n    }\n}\n\nconst canvasAnim = new EnhancedCanvasAnimation('canvas-hero');\n\n// ============================================================================\n// ADVANCED MOUSE TRACKING & EFFECTS\n// ============================================================================\n\nlet mouseX = 0;\nlet mouseY = 0;\nlet lastMouseX = 0;\nlet lastMouseY = 0;\n\ndocument.addEventListener('mousemove', (e) => {\n    mouseX = e.clientX;\n    mouseY = e.clientY;\n\n    const dx = mouseX - lastMouseX;\n    const dy = mouseY - lastMouseY;\n    const distance = Math.sqrt(dx * dx + dy * dy);\n\n    if (distance > 8) {\n        particleSystem.addBurst(mouseX, mouseY, Math.ceil(distance / 4));\n        lastMouseX = mouseX;\n        lastMouseY = mouseY;\n    }\n\n    const heroVisual = document.querySelector('.hero-visual');\n    if (heroVisual && mouseX < window.innerWidth * 0.7) {\n        const x = (mouseX / window.innerWidth - 0.5) * 30;\n        const y = (mouseY / window.innerHeight - 0.5) * 30;\n        heroVisual.style.transform = `perspective(1200px) rotateY(${x}deg) rotateX(${-y}deg) scale(1.02)`;\n    }\n\n    const featureItems = document.querySelectorAll('.feature-item');\n    featureItems.forEach(item => {\n        const rect = item.getBoundingClientRect();\n        const distX = mouseX - (rect.left + rect.width / 2);\n        const distY = mouseY - (rect.top + rect.height / 2);\n        const distance = Math.sqrt(distX * distX + distY * distY);\n\n        if (distance < 200) {\n            const strength = 1 - distance / 200;\n            const moveX = (distX / distance) * strength * 10;\n            const moveY = (distY / distance) * strength * 10;\n            item.style.transform = `translate(${moveX}px, ${moveY}px)`;\n        } else {\n            item.style.transform = 'translate(0, 0)';\n        }\n    });\n});\n\n// ============================================================================\n// SMOOTH SCROLL WITH PARALLAX & EASING\n// ============================================================================\n\nfunction easeInOutCubic(t) {\n    return t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;\n}\n\nlet ticking = false;\nfunction onScroll() {\n    if (!ticking) {\n        requestAnimationFrame(() => {\n            const scrolled = window.scrollY;\n            const parallaxElements = document.querySelectorAll('[data-parallax]');\n            parallaxElements.forEach(el => {\n                const speed = el.dataset.parallax || 0.5;\n                el.style.transform = `translateY(${scrolled * speed}px)`;\n            });\n            ticking = false;\n        });\n        ticking = true;\n    }\n}\n\nwindow.addEventListener('scroll', onScroll, { passive: true });\n\n// ============================================================================\n// ELEMENT TRACKING ON SCROLL\n// ============================================================================\n\nconst observerOptions = {\n    threshold: 0.2,\n    rootMargin: '0px 0px -50px 0px'\n};\n\nconst observer = new IntersectionObserver((entries) => {\n    entries.forEach(entry => {\n        if (entry.isIntersecting) {\n            entry.target.style.opacity = '1';\n            entry.target.style.transform = 'translateY(0) rotateX(0)';\n            \n            const rect = entry.target.getBoundingClientRect();\n            particleSystem.addBurst(\n                rect.left + rect.width / 2,\n                rect.top + rect.height / 2,\n                10\n            );\n        }\n    });\n}, observerOptions);\n\ndocument.querySelectorAll('.feature-item, .tech-card, .stat-card, .pipeline-stage').forEach(el => {\n    el.style.opacity = '0';\n    el.style.transform = 'translateY(30px) rotateX(-20deg)';\n    el.style.transition = 'all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';\n    observer.observe(el);\n});\n\n// ============================================================================\n// BUTTON INTERACTIONS WITH ADVANCED EFFECTS\n// ============================================================================\n\nconst buttons = document.querySelectorAll('.cta-button');\nbuttons.forEach(button => {\n    button.addEventListener('click', function(e) {\n        const rect = this.getBoundingClientRect();\n        const x = e.clientX - rect.left;\n        const y = e.clientY - rect.top;\n\n        const ripple = document.createElement('span');\n        ripple.style.cssText = `\n            position: absolute;\n            width: 20px;\n            height: 20px;\n            background: rgba(255, 255, 255, 0.8);\n            border-radius: 50%;\n            left: ${x}px;\n            top: ${y}px;\n            transform: translate(-50%, -50%);\n            pointer-events: none;\n            animation: rippleExpand 0.8s ease-out forwards;\n        `;\n        this.style.position = 'relative';\n        this.style.overflow = 'hidden';\n        this.appendChild(ripple);\n\n        particleSystem.addBurst(e.clientX, e.clientY, 20);\n\n        setTimeout(() => ripple.remove(), 800);\n    });\n\n    button.addEventListener('mouseenter', function() {\n        const rect = this.getBoundingClientRect();\n        particleSystem.addBurst(\n            rect.left + rect.width / 2,\n            rect.top + rect.height / 2,\n            5\n        );\n    });\n});\n\n// ============================================================================\n// TECH CARD HOVER EFFECTS WITH TILT\n// ============================================================================\n\nconst techCards = document.querySelectorAll('.tech-card');\ntechCards.forEach(card => {\n    card.addEventListener('mousemove', (e) => {\n        const rect = card.getBoundingClientRect();\n        const x = (e.clientX - rect.left) / rect.width - 0.5;\n        const y = (e.clientY - rect.top) / rect.height - 0.5;\n\n        card.style.transform = `perspective(1000px) rotateX(${-y * 20}deg) rotateY(${x * 20}deg) scale(1.08)`;\n        card.style.boxShadow = `${x * 20}px ${y * 20}px 40px rgba(139, 92, 246, 0.3)`;\n    });\n\n    card.addEventListener('mouseleave', () => {\n        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';\n        card.style.boxShadow = 'none';\n    });\n});\n\n// ============================================================================\n// ANIMATED COUNTER FOR STATS\n// ============================================================================\n\nfunction animateCounters() {\n    const statValues = document.querySelectorAll('.stat-value[data-target]');\n    const observerCount = new IntersectionObserver((entries) => {\n        entries.forEach(entry => {\n            if (entry.isIntersecting && !entry.target.hasAttribute('data-animated')) {\n                entry.target.setAttribute('data-animated', 'true');\n                const target = parseInt(entry.target.dataset.target);\n                let current = 0;\n                const increment = Math.max(1, Math.floor(target / 60));\n                \n                const counter = setInterval(() => {\n                    current += increment;\n                    if (current >= target) {\n                        entry.target.textContent = target;\n                        clearInterval(counter);\n                    } else {\n                        entry.target.textContent = current;\n                    }\n                }, 20);\n            }\n        });\n    }, { threshold: 0.5 });\n\n    statValues.forEach(el => observerCount.observe(el));\n}\n\nsetTimeout(animateCounters, 500);\n\n// ============================================================================\n// FEATURE CARD LIGHT TRACKING\n// ============================================================================\n\nconst featureCards = document.querySelectorAll('.feature-item');\nfeatureCards.forEach(card => {\n    card.addEventListener('mousemove', (e) => {\n        const rect = card.getBoundingClientRect();\n        const x = (e.clientX - rect.left) / rect.width * 100;\n        const y = (e.clientY - rect.top) / rect.height * 100;\n\n        const visual = card.querySelector('.feature-visual');\n        if (visual) {\n            visual.style.left = x + '%';\n            visual.style.top = y + '%';\n            visual.style.opacity = '0.8';\n        }\n    });\n\n    card.addEventListener('mouseleave', () => {\n        const visual = card.querySelector('.feature-visual');\n        if (visual) {\n            visual.style.opacity = '0';\n        }\n    });\n});\n\n// ============================================================================\n// SCROLL-BASED TEXT ANIMATION\n// ============================================================================\n\nfunction animateOnScroll() {\n    const wordElements = document.querySelectorAll('.word');\n    let scrollProgress = 0;\n\n    window.addEventListener('scroll', () => {\n        scrollProgress = window.scrollY / (document.documentElement.scrollHeight - window.innerHeight);\n        \n        wordElements.forEach((word, index) => {\n            const rotation = scrollProgress * 360 * (index + 1);\n            const scale = 1 + Math.sin(scrollProgress * Math.PI) * 0.1;\n            word.style.transform = `rotateZ(${rotation}deg) scale(${scale})`;\n        });\n    }, { passive: true });\n}\n\nsetTimeout(animateOnScroll, 1000);\n\n// ============================================================================\n// KEYBOARD EASTER EGG WITH EFFECTS\n// ============================================================================\n\nlet easterEggSequence = '';\nconst easterEggs = {\n    'quantum': () => {\n        console.log('%c⚛️ QUANTUM MODE ACTIVATED!', 'font-size: 25px; color: #8B5CF6; font-weight: bold;');\n        document.body.style.filter = 'hue-rotate(1turn)';\n        setTimeout(() => {\n            document.body.style.filter = 'hue-rotate(0turn)';\n        }, 500);\n        for (let i = 0; i < 100; i++) {\n            particleSystem.addBurst(\n                Math.random() * window.innerWidth,\n                Math.random() * window.innerHeight,\n                5\n            );\n        }\n    },\n    'copilot': () => {\n        console.log('%c🚀 COPILOT ENGAGED!', 'font-size: 25px; color: #06B6D4; font-weight: bold;');\n        document.querySelectorAll('.tech-card').forEach((card, i) => {\n            setTimeout(() => {\n                card.style.animation = 'spin 1s ease-out';\n            }, i * 100);\n        });\n    }\n};\n\ndocument.addEventListener('keydown', (e) => {\n    easterEggSequence += e.key.toLowerCase();\n    easterEggSequence = easterEggSequence.slice(-10);\n\n    Object.keys(easterEggs).forEach(key => {\n        if (easterEggSequence.includes(key)) {\n            easterEggs[key]();\n            easterEggSequence = '';\n        }\n    });\n});\n\n// ============================================================================\n// DYNAMIC ANIMATIONS STYLESHEET\n// ============================================================================\n\nconst dynamicStyle = document.createElement('style');\ndynamicStyle.textContent = `\n    @keyframes rippleExpand {\n        to {\n            transform: translate(-50%, -50%) scale(8);\n            opacity: 0;\n        }\n    }\n    @keyframes spin {\n        to {\n            transform: rotateY(360deg);\n        }\n    }\n    @keyframes float {\n        0%, 100% { transform: translateY(0); }\n        50% { transform: translateY(-10px); }\n    }\n`;\ndocument.head.appendChild(dynamicStyle);\n\n// ============================================================================\n// PERFORMANCE MONITORING\n// ============================================================================\n\nlet frameCount = 0;\nlet fps = 60;\nlet lastTime = performance.now();\n\nfunction measurePerformance() {\n    const currentTime = performance.now();\n    const deltaTime = currentTime - lastTime;\n    \n    if (deltaTime >= 1000) {\n        fps = frameCount;\n        frameCount = 0;\n        lastTime = currentTime;\n        \n        if (fps < 30 && particleSystem.maxParticles > 40) {\n            particleSystem.maxParticles = Math.max(40, particleSystem.maxParticles - 20);\n            console.log('⚡ Performance mode: Particle count reduced to', particleSystem.maxParticles);\n        }\n    }\n    frameCount++;\n    requestAnimationFrame(measurePerformance);\n}\n\nmeasurePerformance();\n\n// ============================================================================\n// CONSOLE WELCOME MESSAGE\n// ============================================================================\n\nconsole.clear();\nconsole.log(`\n%c╔═══════════════════════════════════════════════════════════════╗\n║                                                               ║\n║              🚀 WELCOME TO 10BI TECHNOLOGY GIANT 🚀           ║\n║                                                               ║\n║         Next Generation Development Platform v2.0.1          ║\n║                                                               ║\n╚═══════════════════════════════════════════════════════════════╝\n`, 'color: #8B5CF6; font-weight: bold; font-family: monospace; font-size: 12px;');\n\nconsole.log('%c✨ PREMIUM FEATURES LOADED:', 'color: #06B6D4; font-weight: bold; font-size: 14px;');\nconsole.log('%c• Advanced Physics-Based Particle System', 'color: #10B981; font-size: 12px;');\nconsole.log('%c• Mouse-Driven Particle Bursts', 'color: #10B981; font-size: 12px;');\nconsole.log('%c• Multi-Axis 3D Tilt Effects', 'color: #10B981; font-size: 12px;');\nconsole.log('%c• Magnetic Field Hover Tracking', 'color: #10B981; font-size: 12px;');\nconsole.log('%c• Smooth Scroll Parallax', 'color: #10B981; font-size: 12px;');\nconsole.log('%c• Counter Animations with Easing', 'color: #10B981; font-size: 12px;');\nconsole.log('%c• Canvas Particle Connections', 'color: #10B981; font-size: 12px;');\nconsole.log('%c• Auto Performance Optimization', 'color: #10B981; font-size: 12px;');\n\nconsole.log('%c🎮 EASTER EGGS:', 'color: #EF4444; font-weight: bold; font-size: 14px;');\nconsole.log('%cType \"quantum\" or \"copilot\" on your keyboard!', 'color: #EF4444; font-size: 12px;');\n
